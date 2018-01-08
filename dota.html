@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <img :src="profile.avatar" alt="">
+        <img :src="profile.avatarfull" alt="">
+        <a :href="profile.profileurl">主页</a>
+        <p>{{profile.personaname}}</p>
+        <p>mmr:{{mmr}}</p>
+
+        <table>
+            <tr>
+                <th>hero</td>
+                <th>kills</td>
+                <th>deaths</td>
+                <th>assists</td>
+                <th>win</td>
+            </tr>
+            <tr v-for="td in match">
+                <td>{{td.hero_id}}</td>
+                <td>{{td.kills}}</td>
+                <td>{{td.deaths}}</td>
+                <td>{{td.assists}}</td>
+                <td>{{td.radiant_win|win}}</td>
+            </tr>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        const url = 'https://api.opendota.com/api/players/144027264';
+        const match = 'https://api.opendota.com/api/players/144027264/matches?limit=100';
+
+        new Vue({
+            el: '#app',
+            data: {
+                mmr: 0,
+                profile: {},
+                match: []
+            },
+            mounted() {
+                fetch(url).then(response => response.json()).then(data => {
+                    this.profile = data.profile;
+                    this.mmr = data.mmr_estimate.estimate;
+                });
+
+                fetch(match).then(response => response.json()).then(data => {
+                    this.match = data;
+                });
+            },
+            filters:{
+                win(val){
+                    return val?'输':'赢'    
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
