@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>丸丸</title>
+    <style>
+        body{
+            background: url("IMG_1154.JPG") right center no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+<div>温馨提示，把文件夹放在不经常移动的地方，这样数据不会丢失</div>
+<div id="app">
+    <h2>和小丸子相恋的第</h2>
+    <h1>
+        <span id="y">{{y}}</span>年
+        <span id="M">{{M}}</span>月
+        <span id="d">{{d}}</span>天
+        <span id="h">{{h}}</span>时
+        <span id="m">{{m}}</span>分
+        <span id="s">{{s}}</span>秒
+    </h1>
+    <p>我希望能永远的走下去。</p>
+
+    <h3>如果我惹你生气了，就再下面记录下来，到时候找我算账，多一次我就无条件答应你一件事。我保证。</h3>
+
+    <textarea name="" id="" cols="30" rows="10" v-model="todo"></textarea>
+    <button @click="add">添加</button>
+    <ul v-for="(li,index) in list">
+        <li>{{li}}<button @click="remove(li)">删除</button></li>
+    </ul>
+</div>
+<div style="color: #fff;font-size: 12px;">6aWt5Zui5pyA5Zac5qyi5bCP5Li45a2Q5LqGLOaDs+WSjOWwj+S4uOWtkOe7k+Wpmg==</div>
+ <script src="vue.dev2.0.js"></script>
+<script>
+    const local = {
+        localState(){
+            let state = null;
+            if(localStorage.state){
+                return JSON.parse(localStorage.state);
+            }else{
+                state ={
+                    list:[]
+                };
+                localStorage.state = JSON.stringify(state);
+                return state;
+            }
+        },
+        changeState(key,value){
+            let self = this ,state = self.localState();
+            state[key]=value;
+            localStorage.state = JSON.stringify(state);
+
+        },
+    };
+
+
+
+    new Vue({
+        el:'#app',
+        data:{
+            y:0,
+            M:0,
+            d:0,
+            h:0,
+            m:0,
+            s:0,
+            todo:'',
+            list:[]
+        },
+        created(){
+            const vm = this;
+            const one = new Date() ;
+            one.setFullYear(2016,2,2);
+            one.setHours(0,0,0);
+
+            vm.list = local.localState().list ;
+
+            setInterval(function () {
+                const now = new Date() ;
+                const date = new Date(now -one);
+                vm.y = date.getFullYear()-1970;
+                vm.M = date.getMonth() ;
+                vm.d = date.getDate();
+                vm.h = date.getHours();
+                vm.m = date.getMinutes();
+                vm.s = date.getSeconds() ;
+
+            },1000)
+        },
+        methods:{
+            add(){
+                if(this.todo){
+                    alert('饭团是王八蛋，又惹小丸子生气了')
+                    this.list.push(this.todo);
+                    this.todo = '';
+                    local.changeState('list',this.list);
+                }
+            },
+            remove(todo){
+                alert('谢谢丸丸再给我一次机会，么么哒');
+                this.list.splice(this.list.indexOf(todo), 1);
+                local.changeState('list',this.list);
+            }
+        }
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>
