@@ -85,7 +85,7 @@
 
 
             var loader = new THREE.ImageLoader(manager);
-            loader.load('logo.png', function (image) {
+            loader.load('qiu/logo.png', function (image) {
 
                 texture.image = image;
                 texture.needsUpdate = true;
@@ -95,7 +95,7 @@
             // model
 
             var loader = new THREE.OBJLoader(manager);
-            loader.load('earth.obj', function (object) {
+            loader.load('qiu/earth.obj', function (object) {
 
                 object.traverse(function (child) {
 
