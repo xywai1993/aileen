@@ -35,9 +35,10 @@
             init();
             animate();
         }
-        let objobj = null;
+        let grid = null;
+        let map = null;
+        let earth = null;
         function init() {
-
             container = document.getElementById('container');
             console.log(container)
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
@@ -58,23 +59,59 @@
             //     objobj = object;
             //     scene.add(object);
             // });
-
+            //网格        
             new THREE.MTLLoader()
-                .load('qiu/02.mtl', function (materials) {
+                .load('qiu/grid.mtl', function (materials) {
 
                     materials.preload();
 
                     new THREE.OBJLoader()
                         .setMaterials(materials)
-                        .load('qiu/02.obj', function (object) {
-
-                            objobj = object;
+                        .load('qiu/grid.obj', function (object) {
+                            grid = object;
                             scene.add(object);
-
                         });
-
                 });
+            //地球
+            new THREE.MTLLoader()
+                .load('qiu/earth2.mtl', function (materials) {
 
+                    materials.preload();
+
+                    new THREE.OBJLoader()
+                        .setMaterials(materials)
+                        .load('qiu/earth2.obj', function (object) {
+                            earth = object;
+                            scene.add(object);
+                        });
+                });
+            //地球凸起
+            new THREE.MTLLoader()
+                .load('qiu/map.mtl', function (materials) {
+
+                    materials.preload();
+
+                    new THREE.OBJLoader()
+                        .setMaterials(materials)
+                        .load('qiu/map.obj', function (object) {
+                            map = object;
+                            scene.add(object);
+                        });
+                });
+            //背景
+            new THREE.MTLLoader()
+                .load('qiu/load.mtl', function (materials) {
+
+                    materials.preload();
+
+                    new THREE.OBJLoader()
+                        .setMaterials(materials)
+                        .load('qiu/load.obj', function (object) {
+                            //map = object;
+                            object.rotation.y = 20;
+                            scene.add(object);
+                        });
+                });
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
@@ -85,8 +122,14 @@
 
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
-            if (objobj) {
-                objobj.rotation.y += 0.01
+            if (grid) {
+                grid.rotation.y += 0.009;
+            }
+            if (earth) {
+                earth.rotation.y -= 0.01;
+            }
+            if (map) {
+                map.rotation.y -= 0.01;
             }
 
         }
