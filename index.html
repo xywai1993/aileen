@@ -40,7 +40,7 @@
             container = document.getElementById('container');
             console.log(container)
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
-            camera.position.z = 1000;
+            camera.position.z = 2000;
 
             scene = new THREE.Scene();
 
@@ -52,7 +52,7 @@
             scene.add(directionalLight);
 
             var loader = new THREE.OBJLoader();
-            loader.load('qiu/earth.obj', function (object) {
+            loader.load('qiu/01.obj', function (object) {
                 console.log(object);
                 objobj = object;
                 scene.add(object);
