@@ -26,6 +26,7 @@
     <script src="qiu/three.js"></script>
     <!--<script src="three.module.js"></script>-->
     <script src="qiu/OBJLoader.js"></script>
+    <script src="qiu/MTLLoader.js"></script>
     <script src="qiu/TrackballControls.js"></script>
 
 
@@ -51,12 +52,28 @@
             directionalLight.position.set(0, 0, 1);
             scene.add(directionalLight);
 
-            var loader = new THREE.OBJLoader();
-            loader.load('qiu/01.obj', function (object) {
-                console.log(object);
-                objobj = object;
-                scene.add(object);
-            });
+            // var loader = new THREE.OBJLoader();
+            // loader.load('qiu/01.obj', function (object) {
+            //     console.log(object);
+            //     objobj = object;
+            //     scene.add(object);
+            // });
+
+            new THREE.MTLLoader()
+                .load('qiu/01.mtl', function (materials) {
+
+                    materials.preload();
+
+                    new THREE.OBJLoader()
+                        .setMaterials(materials)
+                        .load('qiu/01.obj', function (object) {
+
+                            objobj = object;
+                            scene.add(object);
+
+                        });
+
+                });
 
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
