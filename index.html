@@ -41,7 +41,7 @@
             container = document.getElementById('container');
             console.log(container)
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
-            camera.position.z = 2000;
+            camera.position.z = 600;
 
             scene = new THREE.Scene();
 
@@ -60,13 +60,13 @@
             // });
 
             new THREE.MTLLoader()
-                .load('qiu/01.mtl', function (materials) {
+                .load('qiu/02.mtl', function (materials) {
 
                     materials.preload();
 
                     new THREE.OBJLoader()
                         .setMaterials(materials)
-                        .load('qiu/01.obj', function (object) {
+                        .load('qiu/02.obj', function (object) {
 
                             objobj = object;
                             scene.add(object);
