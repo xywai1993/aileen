@@ -58,6 +58,10 @@
                             <div class="menu-title">月</div>
                             <div class="weeks" id="month"></div>
                         </li>
+                        <li>
+                            <div class="menu-title">other</div>
+                            <div class="weeks" id="other"></div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -84,15 +88,20 @@
 
                 return { ymd: t1, hms: t2 };
             };
-            const weekDay = date => {
+            const weekDay = (date, split = '/') => {
                 const time = new Date(date);
                 const week = time.getDay();
                 const before = new Date(date);
                 before.setDate(before.getDate() - week);
                 const after = new Date(date);
                 after.setDate(after.getDate() + (6 - week));
-                console.log(formatTime(before).ymd, formatTime(after).ymd);
-                return { afterYMD: formatTime(after).ymd, beforeYMD: formatTime(before).ymd, after, before };
+                console.log(formatTime(before, split).ymd, formatTime(after, split).ymd);
+                return {
+                    afterYMD: formatTime(after, split).ymd,
+                    beforeYMD: formatTime(before, split).ymd,
+                    after,
+                    before
+                };
             };
             const monthDay = dateString => {
                 const date = new Date(dateString);
@@ -109,15 +118,18 @@
             const day = document.querySelector('#day');
             const week = document.querySelector('#week');
             const month = document.querySelector('#month');
+            const other = document.querySelector('#other');
             // 选择时间
             document.querySelector('#dateChange').addEventListener('change', function(e) {
                 console.log(e.target.value);
                 const date = e.target.value;
                 weekDays = weekDay(date);
                 monthDays = monthDay(date);
+                otherDays = weekDay(date, '');
                 day.innerHTML = date;
                 week.innerHTML = `${weekDays.beforeYMD}--${weekDays.afterYMD}`;
                 month.innerHTML = `${monthDays.beforeYMD}--${monthDays.afterYMD}`;
+                other.innerHTML = `${otherDays.beforeYMD}${otherDays.afterYMD}.md`;
             });
         </script>
     </body>
