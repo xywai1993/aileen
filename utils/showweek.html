@@ -1,131 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-            body {
-                background: #ffeb67;
-            }
-            .top {
-                padding: 66px 0 16px;
-            }
-            .menu {
-                width: 100%;
-                list-style: none;
-            }
-            .menu > li {
-                text-align: center;
-            }
-            .choice-date {
-                margin: 27px auto 21px;
-                width: 128px;
-                height: 30px;
-                line-height: 30px;
-                text-indent: 10px;
-                border-radius: 4px;
-                background: rgba(255, 249, 212, 1) url('@{cdn}date-icon@2x.png') 102px center no-repeat;
-                background-size: 19px auto;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div id="body" class="body">
-                <div class="top">
-                    <div class="choice-date"><input type="date" name="" id="dateChange" /></div>
-                    <ul class="menu">
-                        <li>
-                            <div>日</div>
-                            <div id="day"></div>
-                        </li>
-                        <li>
-                            <div>周</div>
-                            <div class="weeks" id="week"></div>
-                        </li>
-                        <li>
-                            <div class="menu-title">月</div>
-                            <div class="weeks" id="month"></div>
-                        </li>
-                        <li>
-                            <div class="menu-title">other</div>
-                            <div class="weeks" id="other"></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #ffeb67;
+      }
+      .top {
+        padding: 66px 0 16px;
+      }
+      .menu {
+        width: 100%;
+        list-style: none;
+      }
+      .menu > li {
+        text-align: center;
+      }
+      .choice-date {
+        margin: 27px auto 21px;
+        width: 128px;
+        height: 30px;
+        line-height: 30px;
+        text-indent: 10px;
+        border-radius: 4px;
+        background: rgba(255, 249, 212, 1) url("@{cdn}date-icon@2x.png") 102px
+          center no-repeat;
+        background-size: 19px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="body" class="body">
+        <div class="top">
+          <div class="choice-date">
+            <input type="date" name="" id="dateChange" />
+          </div>
+          <ul class="menu">
+            <li>
+              <div>日</div>
+              <div id="day"></div>
+            </li>
+            <li>
+              <div>周</div>
+              <div class="weeks" id="week"></div>
+            </li>
+            <li>
+              <div class="menu-title">月</div>
+              <div class="weeks" id="month"></div>
+            </li>
+            <li>
+              <div class="menu-title">other</div>
+              <div class="weeks" id="other"></div>
+            </li>
+            <li>
+              <div class="menu-title">tips</div>
+              <div class="weeks" id="tips"></div>
+            </li>
+          </ul>
         </div>
-        <script>
-            let weekDays = {};
-            let monthDays = {};
+      </div>
+    </div>
+    <script>
+      let weekDays = {};
+      let monthDays = {};
 
-            function formatNumber(n) {
-                const str = n.toString();
-                return str[1] ? str : `0${str}`;
-            }
-            const formatTime = (date = new Date(), split = '/') => {
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1;
-                const day = date.getDate();
+      function formatNumber(n) {
+        const str = n.toString();
+        return str[1] ? str : `0${str}`;
+      }
+      const formatTime = (date = new Date(), split = "/") => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
 
-                const hour = date.getHours();
-                const minute = date.getMinutes();
-                const second = date.getSeconds();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+        const second = date.getSeconds();
 
-                const t1 = [year, month, day].map(formatNumber).join(split);
-                const t2 = [hour, minute, second].map(formatNumber).join(':');
+        const t1 = [year, month, day].map(formatNumber).join(split);
+        const t2 = [hour, minute, second].map(formatNumber).join(":");
 
-                return { ymd: t1, hms: t2 };
-            };
-            const weekDay = (date, split = '/') => {
-                const time = new Date(date);
-                const week = time.getDay();
-                const before = new Date(date);
-                before.setDate(before.getDate() - week);
-                const after = new Date(date);
-                after.setDate(after.getDate() + (6 - week));
-                console.log(formatTime(before, split).ymd, formatTime(after, split).ymd);
-                return {
-                    afterYMD: formatTime(after, split).ymd,
-                    beforeYMD: formatTime(before, split).ymd,
-                    after,
-                    before
-                };
-            };
-            const monthDay = dateString => {
-                const date = new Date(dateString);
-                const month = date.getMonth();
-                const before = new Date(date.getFullYear(), month, 1);
+        return { ymd: t1, hms: t2 };
+      };
+      const weekDay = (date, split = "/") => {
+        const time = new Date(date);
+        const week = time.getDay();
+        const before = new Date(date);
 
-                //tips 获取当月最大的天数 new Date(2018,12,0) 即可获取12月份最大的天数
-                const after = new Date(date.getFullYear(), month + 1, 0);
+        const yearFirstDay = new Date(before.getFullYear(), 0, 1);
+        const allDays = parseInt((before - yearFirstDay) / (1000 * 24 * 3600));
+        const allWeeks = parseInt((allDays + yearFirstDay.getDay()) / 7);
 
-                console.log(formatTime(before).ymd, formatTime(after).ymd);
-                return { afterYMD: formatTime(after).ymd, beforeYMD: formatTime(before).ymd, after, before };
-            };
+        const weekInYear =
+          yearFirstDay.getDay() === 0 ? allWeeks + 1 : allWeeks;
+        console.log(
+          `1.1号是星期${yearFirstDay.getDay()} `,
 
-            const day = document.querySelector('#day');
-            const week = document.querySelector('#week');
-            const month = document.querySelector('#month');
-            const other = document.querySelector('#other');
-            // 选择时间
-            document.querySelector('#dateChange').addEventListener('change', function(e) {
-                console.log(e.target.value);
-                const date = e.target.value;
-                weekDays = weekDay(date);
-                monthDays = monthDay(date);
-                otherDays = weekDay(date, '');
-                day.innerHTML = date;
-                week.innerHTML = `${weekDays.beforeYMD}--${weekDays.afterYMD}`;
-                month.innerHTML = `${monthDays.beforeYMD}--${monthDays.afterYMD}`;
-                other.innerHTML = `${otherDays.beforeYMD}${otherDays.afterYMD}.md`;
-            });
-        </script>
-    </body>
+          `一年中过了${allDays}天, 过了几周： allWeeks:${allWeeks} ,一年中第：${weekInYear}周`
+        );
+        before.setDate(before.getDate() - week);
+        const after = new Date(date);
+        after.setDate(after.getDate() + (6 - week));
+
+        return {
+          afterYMD: formatTime(after, split).ymd,
+          beforeYMD: formatTime(before, split).ymd,
+          after,
+          before,
+          weekInYear,
+          tipsStr: weekInYear
+            ? `一年中过了${parseInt(allDays)}天,这是一年中第：${weekInYear}周`
+            : `一年中过了${parseInt(allDays)}天,这是上一年的第：52周`
+        };
+      };
+      const monthDay = dateString => {
+        const date = new Date(dateString);
+        const month = date.getMonth();
+        const before = new Date(date.getFullYear(), month, 1);
+
+        //tips 获取当月最大的天数 new Date(2018,12,0) 即可获取12月份最大的天数
+        const after = new Date(date.getFullYear(), month + 1, 0);
+
+        console.log(formatTime(before).ymd, formatTime(after).ymd);
+        return {
+          afterYMD: formatTime(after).ymd,
+          beforeYMD: formatTime(before).ymd,
+          after,
+          before
+        };
+      };
+
+      const day = document.querySelector("#day");
+      const week = document.querySelector("#week");
+      const month = document.querySelector("#month");
+      const other = document.querySelector("#other");
+      const tips = document.querySelector("#tips");
+      // 选择时间
+      document
+        .querySelector("#dateChange")
+        .addEventListener("change", function(e) {
+          console.log(e.target.value);
+          const date = e.target.value;
+          weekDays = weekDay(date);
+          monthDays = monthDay(date);
+          otherDays = weekDay(date, "");
+          day.innerHTML = date;
+          week.innerHTML = `${weekDays.beforeYMD}--${weekDays.afterYMD}`;
+          month.innerHTML = `${monthDays.beforeYMD}--${monthDays.afterYMD}`;
+          other.innerHTML = `${otherDays.beforeYMD}-${
+            weekDays.weekInYear ? weekDays.weekInYear : 52
+          }周.md `;
+          tips.innerHTML = ` 注意： ${weekDays.tipsStr}`;
+        });
+    </script>
+  </body>
 </html>
