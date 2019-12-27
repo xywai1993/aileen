@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="sleep"></h1>
+    <script>
+      // 人体一个睡眠周期是1个半小时，因此 4.5  6 ，7.5 ，9 依次为最佳睡眠时间 ，留15分钟入睡，因此7.75
+      const sleepS = 7.75 * 3600 * 1000;
+      const date = new Date(new Date().getTime() + sleepS);
+      const str = date.toLocaleDateString() + date.toLocaleTimeString();
+      document.querySelector("#sleep").innerHTML = `起床时间：${str}`;
+    </script>
+  </body>
+</html>
